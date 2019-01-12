@@ -3,8 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.jnotes.chen.jnotes.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/mbtn_login"
+        android:title="登陆" />
+    <item
+        android:id="@+id/mbtn_text"
+        android:title="创建"/>
 </menu>
