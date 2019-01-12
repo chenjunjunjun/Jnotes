@@ -51,8 +51,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.mbtn_login:
-//                intent = new Intent(MainActivity.this, LoginActivity.class);
-                Toast.makeText(this, "登陆", Toast.LENGTH_SHORT).show();
+                intent = new Intent(MainActivity.this, LoginActivity.class);
+//                Toast.makeText(this, "登陆", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mbtn_text:
                 Toast.makeText(this, "新建", Toast.LENGTH_SHORT).show();
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             default:
                 break;
         }
-//        startActivity(intent);
+        startActivity(intent);
         return false;
     }
 
