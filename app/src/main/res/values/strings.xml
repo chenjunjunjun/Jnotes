@@ -2,4 +2,6 @@
     <string name="app_name">JNotes</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_signp">SignpActivity</string>
+
+    <string name="rt_editor_text_init_hint">写下你的今天...</string>
 </resources>

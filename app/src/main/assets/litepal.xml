@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <dbname value="JNote" />
+
+    <version value="1" />
+
+    <list>
+        <mapping class="com.jnotes.chen.jnotes.bean.Note" />
+        <mapping class="com.jnotes.chen.jnotes.bean.NoteClass" />
+    </list>
+
+</litepal>

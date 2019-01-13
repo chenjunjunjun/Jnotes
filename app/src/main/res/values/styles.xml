@@ -6,6 +6,8 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowActionBar">false</item> <!-- 加这行 -->
+        <item name="windowNoTitle">true</item> <!-- 再加这行 -->
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,5 +24,12 @@
         <item name="android:textColorPrimary">@color/iron</item>
         <item name="android:background">@color/primary</item>
     </style>
+
+    <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:textSize">14sp</item>
+
+    </style>
+
+
 
 </resources>
