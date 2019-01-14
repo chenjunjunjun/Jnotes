@@ -1,4 +1,4 @@
-package com.jnotes.chen.jnotes;
+package com.jnotes.chen.jnotes.activity;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -12,13 +12,11 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +25,8 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
+import com.jnotes.chen.jnotes.MyApplication;
+import com.jnotes.chen.jnotes.R;
 import com.jnotes.chen.jnotes.jsonbean.JsonRootBean;
 import com.jnotes.chen.jnotes.util.HttpUtil;
 import com.jnotes.chen.jnotes.util.ImageUtils;
@@ -670,7 +670,8 @@ public class NewAndEditActivity extends BaseActivity {
     }
 
     void showWeatherInfo(JsonRootBean jsonRootBean) {
-        note.setNowWeather(jsonRootBean.results.get(0).weather_data.get(0).date + "  " + jsonRootBean.results.get(0).weather_data.get(0).weather);
+//        note.setNowWeather(jsonRootBean.results.get(0).weather_data.get(0).date + "  " + jsonRootBean.results.get(0).weather_data.get(0).weather);
+        note.setNowWeather("多云");
         tv_info_weather.setText(note.getNowWeather());        //显示天气数据
     }
 
@@ -716,7 +717,7 @@ public class NewAndEditActivity extends BaseActivity {
                 Log.d(TAG, "onReceiveLocation: " + currentPosition);
                 note.setNowLocation(currentPosition.toString());
                 tv_info_location.setText(note.getNowLocation());//显示查询到位置
-//                requestWeather(location.getDistrict());//请求天气，并显示
+                requestWeather(location.getDistrict());//请求天气，并显示
             }
         }
     }

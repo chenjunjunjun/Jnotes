@@ -1,4 +1,4 @@
-package com.jnotes.chen.jnotes;
+package com.jnotes.chen.jnotes.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jnotes.chen.jnotes.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

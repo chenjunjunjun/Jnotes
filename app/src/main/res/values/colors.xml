@@ -14,5 +14,12 @@
     <color name="base">#AAAAAA</color>
     <color name="iron">#CCCCCC</color>
     <color name="white">#FFFFFF</color>
+    <color name="notetitle">#171717</color>
+    <color name="notetype">#2d2d2d</color>
+    <color name="notesummary">#9f9f9f</color>
+    <color name="notetime">#d8d8d8</color>
+    <color name="mainbac">#f5f5f5</color>
+    <color name="notecontent">#171717</color>
+    <color name="info">#171717</color>
 
 </resources>

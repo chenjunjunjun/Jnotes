@@ -1,4 +1,4 @@
-package com.jnotes.chen.jnotes;
+package com.jnotes.chen.jnotes.activity;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,25 +10,29 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.jnotes.chen.jnotes.view.CustomDialog;
+import com.jnotes.chen.jnotes.MyApplication;
+import com.jnotes.chen.jnotes.adapter.NoteAdapter;
+import com.jnotes.chen.jnotes.R;
+import com.jnotes.chen.jnotes.view.SpacesItem;
+import com.jnotes.chen.jnotes.view.SpinerPopWindow;
 import com.jnotes.chen.jnotes.bean.Note;
 import com.jnotes.chen.jnotes.bean.NoteClass;
 import com.jnotes.chen.jnotes.search.NoteClassLitepal;
 import com.jnotes.chen.jnotes.search.NoteLitepal;
 import com.jnotes.chen.jnotes.util.CommonUtil;
+import com.simple.spiderman.CrashModel;
+import com.simple.spiderman.SpiderMan;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,11 +100,8 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        initView();
         initGroup();
-
-
+        initView();
 //        Intent intent = new Intent(this, LoginActivity.class);
 //        startActivity(intent);
 
@@ -113,7 +114,7 @@ public class MainActivity extends BaseActivity {
 
 
     void initGroup() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         boolean isInit = prefs.getBoolean("isInit", false);
         if (!isInit) {
             NoteClass group = new NoteClass();
@@ -121,7 +122,7 @@ public class MainActivity extends BaseActivity {
             group.setUpdateTime(group.getCreateTime());
             group.setName("全部便签");
             NoteClassLitepal.createNewGroup(group);
-            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit();
+            SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MainActivity.this).edit();
             editor.putBoolean("isInit", true);
             editor.apply();
             groupName = "全部便签";
@@ -176,23 +177,23 @@ public class MainActivity extends BaseActivity {
         });
         customDialog = new CustomDialog(this);
         //弹出崩溃信息展示界面
-//        SpiderMan.getInstance()
-//                .init(this)
-//                //设置是否捕获异常，不弹出崩溃框
-//                .setEnable(true)
-//                //设置是否显示崩溃信息展示页面
-//                .showCrashMessage(true)
-//                //是否回调异常信息，友盟等第三方崩溃信息收集平台会用到,
-//                .setOnCrashListener(new SpiderMan.OnCrashListener() {
-//                    @Override
-//                    public void onCrash(Thread t, Throwable ex, CrashModel model) {
-//                        //CrashModel 崩溃信息记录，包含设备信息
-//                    }
-//                });
-//
-//        rv_list_main = findViewById(R.id.recycler_view);
-//
-//        rv_list_main.addItemDecoration(new SpacesItemDecoration(0));//设置item间距
+        SpiderMan.getInstance()
+                .init(this)
+                //设置是否捕获异常，不弹出崩溃框
+                .setEnable(true)
+                //设置是否显示崩溃信息展示页面
+                .showCrashMessage(true)
+                //是否回调异常信息，友盟等第三方崩溃信息收集平台会用到,
+                .setOnCrashListener(new SpiderMan.OnCrashListener() {
+                    @Override
+                    public void onCrash(Thread t, Throwable ex, CrashModel model) {
+                        //CrashModel 崩溃信息记录，包含设备信息
+                    }
+                });
+
+        rv_list_main = findViewById(R.id.recycler_view);
+
+        rv_list_main.addItemDecoration(new SpacesItem(0));//设置item间距
 
     }
 
