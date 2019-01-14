@@ -10,10 +10,13 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -21,7 +24,6 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.jnotes.chen.jnotes.view.CustomDialog;
-import com.jnotes.chen.jnotes.MyApplication;
 import com.jnotes.chen.jnotes.adapter.NoteAdapter;
 import com.jnotes.chen.jnotes.R;
 import com.jnotes.chen.jnotes.view.SpacesItem;
@@ -40,7 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements  View.OnClickListener, PopupMenu.OnMenuItemClickListener{
 
     private static final String TAG = "MainActivity";
     private FloatingActionButton fab;
@@ -151,15 +153,16 @@ public class MainActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         setTitle("");
         fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, NewAndEditActivity.class);
-                intent.putExtra("groupName", groupName);
-                intent.putExtra("flag", 0);//新建还是编辑，flag
-                startActivity(intent);
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(MainActivity.this, NewAndEditActivity.class);
+//                intent.putExtra("groupName", groupName);
+//                intent.putExtra("flag", 0);//新建还是编辑，flag
+//                startActivity(intent);
+//            }
+//        });
+        fab.setOnClickListener(this);
         spinner = findViewById(R.id.group_spinner);
         setTextImage(R.drawable.drop_down);
         WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
@@ -289,35 +292,35 @@ public class MainActivity extends BaseActivity {
 
 
 
-//    //创建弹出式菜单
-//    @Override
-//    public void onClick(View v) {
-//        PopupMenu popupMenu = new PopupMenu(this, v);
-//        MenuInflater menuInflater = popupMenu.getMenuInflater();
-//        menuInflater.inflate(R.menu.menu_main, popupMenu.getMenu());
-//        popupMenu.setOnMenuItemClickListener(this);
-//        popupMenu.show();
-//    }
-//
-//
-//    @Override
-//    public boolean onMenuItemClick(MenuItem item) {
-//        Intent intent = null;
-//        switch (item.getItemId()) {
-//            case R.id.mbtn_login:
-//                intent = new Intent(MainActivity.this, LoginActivity.class);
-//                intent.putExtra("groupName", groupName);
-//                intent.putExtra("flag", 0);
-////                Toast.makeText(this, "登陆", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.mbtn_text:
-//                intent = new Intent(MainActivity.this, NewAndEditActivity.class);
-//                break;
-//            default:
-//                break;
-//        }
-//        startActivity(intent);
-//        return false;
-//    }
+    //创建弹出式菜单
+    @Override
+    public void onClick(View v) {
+        PopupMenu popupMenu = new PopupMenu(this, v);
+        MenuInflater menuInflater = popupMenu.getMenuInflater();
+        menuInflater.inflate(R.menu.menu_main, popupMenu.getMenu());
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.show();
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Intent intent = null;
+        switch (item.getItemId()) {
+            case R.id.mbtn_login:
+                intent = new Intent(MainActivity.this, LoginActivity.class);
+//                Toast.makeText(this, "登陆", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mbtn_text:
+                intent = new Intent(MainActivity.this, NewAndEditActivity.class);
+                intent.putExtra("groupName", groupName);
+                intent.putExtra("flag", 0);
+                break;
+            default:
+                break;
+        }
+        startActivity(intent);
+        return false;
+    }
 
 }
