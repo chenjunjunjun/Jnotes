@@ -27,15 +27,12 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 
-//import com.luyucheng.lightnotes.gson.JsonRootBean;
-//import com.luyucheng.lightnotes.util.CommonUtil;
-//import com.luyucheng.lightnotes.util.GetPhoneInfo;
-//import com.luyucheng.lightnotes.util.HttpUtil;
-//import com.luyucheng.lightnotes.util.ImageUtils;
-//import com.luyucheng.lightnotes.util.JsonUtil;
-//import com.luyucheng.lightnotes.util.MyGlideEngine;
-//import com.luyucheng.lightnotes.util.SDCardUtil;
-//import com.luyucheng.lightnotes.util.StringUtils;
+import com.jnotes.chen.jnotes.jsonbean.JsonRootBean;
+import com.jnotes.chen.jnotes.util.HttpUtil;
+import com.jnotes.chen.jnotes.util.ImageUtils;
+import com.jnotes.chen.jnotes.util.JsonUtil;
+import com.jnotes.chen.jnotes.util.MyGlideEngine;
+import com.jnotes.chen.jnotes.util.SDCardUtil;
 import com.sendtion.xrichtext.RichTextEditor;
 import com.jnotes.chen.jnotes.bean.Note;
 import com.jnotes.chen.jnotes.util.CommonUtil;
@@ -43,9 +40,9 @@ import com.jnotes.chen.jnotes.bean.NoteClass;
 import com.jnotes.chen.jnotes.search.NoteClassLitepal;
 import com.jnotes.chen.jnotes.search.NoteLitepal;
 import com.jnotes.chen.jnotes.util.StringUtils;
-//import com.zhihu.matisse.Matisse;
-//import com.zhihu.matisse.MimeType;
-//import com.zhihu.matisse.internal.entity.CaptureStrategy;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.internal.entity.CaptureStrategy;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -66,7 +63,7 @@ import rx.schedulers.Schedulers;
 /**
  * 新建笔记
  */
-public class NewAndEditActivity extends AppCompatActivity {
+public class NewAndEditActivity extends BaseActivity {
     private static final String TAG = "NewAndEditActivity";
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int cutTitleLength = 20;//截取的标题长度
@@ -148,50 +145,50 @@ public class NewAndEditActivity extends AppCompatActivity {
         screenWidth = CommonUtil.getScreenWidth(this);
         screenHeight = CommonUtil.getScreenHeight(this);
 
-//        insertDialog = new ProgressDialog(this);
-//        insertDialog.setMessage("正在插入图片...");
-//        insertDialog.setCanceledOnTouchOutside(false);
+        insertDialog = new ProgressDialog(this);
+        insertDialog.setMessage("正在插入图片...");
+        insertDialog.setCanceledOnTouchOutside(false);
 
 
         tv_info_group = findViewById(R.id.new_group_info_text);
         tv_info_weather = findViewById(R.id.new_weather_info_text);
-//        tv_info_location = findViewById(R.id.new_location_info_text);
-//        tv_info_phinfo = findViewById(R.id.new_phone_info_text);
+        tv_info_location = findViewById(R.id.new_location_info_text);
+        tv_info_phinfo = findViewById(R.id.new_phone_info_text);
         et_new_content = findViewById(R.id.et_new_content);
 
 
-        // 图片删除事件
-//        et_new_content.setOnRtImageDeleteListener(new RichTextEditor.OnRtImageDeleteListener() {
-//
-//            @Override
-//            public void onRtImageDelete(String imagePath) {
-//                if (!TextUtils.isEmpty(imagePath)) {
-//                    boolean isOK = SDCardUtil.deleteFile(imagePath);
-//                    if (isOK) {
-//                        // showToast("删除成功：" + imagePath);
-//                    }
-//                }
-//            }
-//        });
-        // 图片点击事件
-//        et_new_content.setOnRtImageClickListener(new RichTextEditor.OnRtImageClickListener() {
-//            @Override
-//            public void onRtImageClick(String imagePath) {
-//                myContent = getEditData();
-//                if (!TextUtils.isEmpty(myContent)) {
-//                    ArrayList<String> imageList = StringUtils.getTextFromHtml(myContent, true);
-//                    if (!TextUtils.isEmpty(imagePath)) {
-//                        int currentPosition = imageList.indexOf(imagePath);
-//                        //点击图片预览
-//                        PhotoPreview.builder()
-//                                .setPhotos(imageList)
-//                                .setCurrentItem(currentPosition)
-//                                .setShowDeleteButton(false)
-//                                .start(NewAndEditActivity.this);
-//                    }
-//                }
-//            }
-//        });
+//         图片删除事件
+        et_new_content.setOnRtImageDeleteListener(new RichTextEditor.OnRtImageDeleteListener() {
+
+            @Override
+            public void onRtImageDelete(String imagePath) {
+                if (!TextUtils.isEmpty(imagePath)) {
+                    boolean isOK = SDCardUtil.deleteFile(imagePath);
+                    if (isOK) {
+                        // showToast("删除成功：" + imagePath);
+                    }
+                }
+            }
+        });
+//         图片点击事件
+        et_new_content.setOnRtImageClickListener(new RichTextEditor.OnRtImageClickListener() {
+            @Override
+            public void onRtImageClick(String imagePath) {
+                myContent = getEditData();
+                if (!TextUtils.isEmpty(myContent)) {
+                    ArrayList<String> imageList = StringUtils.getTextFromHtml(myContent, true);
+                    if (!TextUtils.isEmpty(imagePath)) {
+                        int currentPosition = imageList.indexOf(imagePath);
+                        //点击图片预览
+                        PhotoPreview.builder()
+                                .setPhotos(imageList)
+                                .setCurrentItem(currentPosition)
+                                .setShowDeleteButton(false)
+                                .start(NewAndEditActivity.this);
+                    }
+                }
+            }
+        });
 
         openSoftKeyInput();//打开软键盘显示
         showNoteInfo();//显示info数据
@@ -468,9 +465,6 @@ public class NewAndEditActivity extends AppCompatActivity {
                         note.setType(1);
                     }
                     NoteLitepal.createNewNote(note);
-                    //Log.i("", "noteId: "+noteId);
-                    //查询新建笔记id，防止重复插入
-//                note.setId(noteId);
                     flag = 1;//插入以后只能是编辑
                     if (!isBackground) {
                         Intent intent = new Intent();
@@ -498,27 +492,27 @@ public class NewAndEditActivity extends AppCompatActivity {
     /**
      * 调用图库选择
      */
-//    private void callGallery() {
-////        //调用系统图库
-////        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-////        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");// 相片类型
-////        startActivityForResult(intent, 1);
-//
-//        Matisse.from(this)
-//                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))//照片视频全部显示MimeType.allOf()
-//                .countable(true)//true:选中后显示数字;false:选中后显示对号
-//                .maxSelectable(9)//最大选择数量为9
-//                //.addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-//                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))//图片显示表格的大小
-//                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)//图像选择和预览活动所需的方向
-//                .thumbnailScale(0.85f)//缩放比例
-//                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
-//                .imageEngine(new MyGlideEngine())//图片加载方式，Glide4需要自定义实现
-//                .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
-//                //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
-//                .captureStrategy(new CaptureStrategy(true, "com.luyucheng.lightnotes.fileprovider"))//存储到哪里
-//                .forResult(REQUEST_CODE_CHOOSE);//请求码
-//    }
+    private void callGallery() {
+//        //调用系统图库
+//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");// 相片类型
+//        startActivityForResult(intent, 1);
+
+        Matisse.from(this)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))//照片视频全部显示MimeType.allOf()
+                .countable(true)//true:选中后显示数字;false:选中后显示对号
+                .maxSelectable(9)//最大选择数量为9
+                //.addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))//图片显示表格的大小
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)//图像选择和预览活动所需的方向
+                .thumbnailScale(0.85f)//缩放比例
+                .theme(R.style.Matisse_Zhihu)//主题  暗色主题 R.style.Matisse_Dracula
+                .imageEngine(new MyGlideEngine())//图片加载方式，Glide4需要自定义实现
+                .capture(true) //是否提供拍照功能，兼容7.0系统需要下面的配置
+                //参数1 true表示拍照存储在共有目录，false表示存储在私有目录；参数2与 AndroidManifest中authorities值相同，用于适配7.0系统 必须设置
+                .captureStrategy(new CaptureStrategy(true, "com.luyucheng.lightnotes.fileprovider"))//存储到哪里
+                .forResult(REQUEST_CODE_CHOOSE);//请求码
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, final Intent data) {
@@ -536,67 +530,67 @@ public class NewAndEditActivity extends AppCompatActivity {
         }
     }
 
-//    /**
-//     * 异步方式插入图片
-//     *
-//     * @param data
-//     */
-//    private void insertImagesSync(final Intent data) {
-//        insertDialog.show();
-//
-//        subsInsert = Observable.create(new Observable.OnSubscribe<String>() {
-//            @Override
-//            public void call(Subscriber<? super String> subscriber) {
-//                try {
-//                    et_new_content.measure(0, 0);
-//                    List<Uri> mSelected = Matisse.obtainResult(data);
-//                    // 可以同时插入多张图片
-//                    for (Uri imageUri : mSelected) {
-//                        String imagePath = SDCardUtil.getFilePathFromUri(NewAndEditActivity.this, imageUri);
-//                        //Log.e(TAG, "###path=" + imagePath);
-//                        Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, screenWidth, screenHeight);//压缩图片
-//                        //bitmap = BitmapFactory.decodeFile(imagePath);
-//                        imagePath = SDCardUtil.saveToSdCard(bitmap);
-//                        //Log.e(TAG, "###imagePath="+imagePath);
-//                        subscriber.onNext(imagePath);
-//                    }
-//
-//                    // 测试插入网络图片 http://p695w3yko.bkt.clouddn.com/18-5-5/44849367.jpg
-//                    //subscriber.onNext("http://p695w3yko.bkt.clouddn.com/18-5-5/30271511.jpg");
-//
-//                    subscriber.onCompleted();
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    subscriber.onError(e);
-//                }
-//            }
-//        })
-//                .onBackpressureBuffer()
-//                .subscribeOn(Schedulers.io())//生产事件在io
-//                .observeOn(AndroidSchedulers.mainThread())//消费事件在UI线程
-//                .subscribe(new Observer<String>() {
-//                    @Override
-//                    public void onCompleted() {
-//                        if (insertDialog != null && insertDialog.isShowing()) {
-//                            insertDialog.dismiss();
-//                        }
-//                        //showToast("图片插入成功");
-//                    }
-//
-//                    @Override
-//                    public void onError(Throwable e) {
-//                        if (insertDialog != null && insertDialog.isShowing()) {
-//                            insertDialog.dismiss();
-//                        }
-//                        showToast("图片插入失败:" + e.getMessage());
-//                    }
-//
-//                    @Override
-//                    public void onNext(String imagePath) {
-//                        et_new_content.insertImage(imagePath, et_new_content.getMeasuredWidth());
-//                    }
-//                });
-//    }
+    /**
+     * 异步方式插入图片
+     *
+     * @param data
+     */
+    private void insertImagesSync(final Intent data) {
+        insertDialog.show();
+
+        subsInsert = Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    et_new_content.measure(0, 0);
+                    List<Uri> mSelected = Matisse.obtainResult(data);
+                    // 可以同时插入多张图片
+                    for (Uri imageUri : mSelected) {
+                        String imagePath = SDCardUtil.getFilePathFromUri(NewAndEditActivity.this, imageUri);
+                        //Log.e(TAG, "###path=" + imagePath);
+                        Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, screenWidth, screenHeight);//压缩图片
+                        //bitmap = BitmapFactory.decodeFile(imagePath);
+                        imagePath = SDCardUtil.saveToSdCard(bitmap);
+                        //Log.e(TAG, "###imagePath="+imagePath);
+                        subscriber.onNext(imagePath);
+                    }
+
+                    // 测试插入网络图片 http://p695w3yko.bkt.clouddn.com/18-5-5/44849367.jpg
+                    //subscriber.onNext("http://p695w3yko.bkt.clouddn.com/18-5-5/30271511.jpg");
+
+                    subscriber.onCompleted();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
+            }
+        })
+                .onBackpressureBuffer()
+                .subscribeOn(Schedulers.io())//生产事件在io
+                .observeOn(AndroidSchedulers.mainThread())//消费事件在UI线程
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onCompleted() {
+                        if (insertDialog != null && insertDialog.isShowing()) {
+                            insertDialog.dismiss();
+                        }
+                        //showToast("图片插入成功");
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (insertDialog != null && insertDialog.isShowing()) {
+                            insertDialog.dismiss();
+                        }
+                        showToast("图片插入失败:" + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(String imagePath) {
+                        et_new_content.insertImage(imagePath, et_new_content.getMeasuredWidth());
+                    }
+                });
+    }
 
 
     @Override
@@ -652,33 +646,33 @@ public class NewAndEditActivity extends AppCompatActivity {
 //        mLocationClient.stop();
     }
 
-//    void requestWeather(final String countyName) {
-//        String weatherUrl = "http://api.map.baidu.com/telematics/v3/weather?output=json&ak=???&location=" + countyName;//???处是ak
-//        HttpUtil.sendOkhttpRequest(weatherUrl, new Callback() {
-//            @Override
-//            public void onFailure(okhttp3.Call call, IOException e) {
-//                Log.i(TAG, "onFailure: 失败！");
-//            }
-//
-//            @Override
-//            public void onResponse(okhttp3.Call call, Response response) throws IOException {
-//                final String responseText = response.body().string();
-//                final JsonRootBean jsonRootBean = JsonUtil.handleWeatherResponse(responseText);
-//                Log.i(TAG, "onResponse: " + responseText);
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showWeatherInfo(jsonRootBean);//分析天气数据
-//                    }
-//                });
-//            }
-//        });
-//    }
+    void requestWeather(final String countyName) {
+        String weatherUrl = "http://api.map.baidu.com/telematics/v3/weather?output=json&ak=???&location=" + countyName;//???处是ak
+        HttpUtil.sendOkhttpRequest(weatherUrl, new Callback() {
+            @Override
+            public void onFailure(okhttp3.Call call, IOException e) {
+                Log.i(TAG, "onFailure: 失败！");
+            }
 
-//    void showWeatherInfo(JsonRootBean jsonRootBean) {
-//        note.setNowWeather(jsonRootBean.results.get(0).weather_data.get(0).date + "  " + jsonRootBean.results.get(0).weather_data.get(0).weather);
-//        tv_info_weather.setText(note.getNowWeather());        //显示天气数据
-//    }
+            @Override
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
+                final String responseText = response.body().string();
+                final JsonRootBean jsonRootBean = JsonUtil.handleWeatherResponse(responseText);
+                Log.i(TAG, "onResponse: " + responseText);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showWeatherInfo(jsonRootBean);//分析天气数据
+                    }
+                });
+            }
+        });
+    }
+
+    void showWeatherInfo(JsonRootBean jsonRootBean) {
+        note.setNowWeather(jsonRootBean.results.get(0).weather_data.get(0).date + "  " + jsonRootBean.results.get(0).weather_data.get(0).weather);
+        tv_info_weather.setText(note.getNowWeather());        //显示天气数据
+    }
 
     /**
      * 加载必应每日一图
