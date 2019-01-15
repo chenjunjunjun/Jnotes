@@ -81,7 +81,7 @@ public class  SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
-        Okhttp();
+        Okhttp(name,email,password);
 
 
         new android.os.Handler().postDelayed(
@@ -151,7 +151,7 @@ public class  SignupActivity extends AppCompatActivity {
                         .add("password",password)
                         .build();
                 Request request = new Request.Builder()
-                        .url("http://192.168.1.6/Login/login")  //请求的地址
+                        .url("http://118.24.162.159:8000/jnotes/signup/")  //请求的地址
                         .post(body)
                         .build();
                 OkHttpClient client=new OkHttpClient();
