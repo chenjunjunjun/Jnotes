@@ -146,7 +146,7 @@ public class  SignupActivity extends AppCompatActivity {
             @Override
             public void run() {
                 FormBody body =new FormBody.Builder()
-                        .add("phone",name)   //提交参数电话和密码
+                        .add("name",name)   //提交参数电话和密码
                         .add("email",email)
                         .add("password",password)
                         .build();
@@ -170,15 +170,15 @@ public class  SignupActivity extends AppCompatActivity {
 
     }
 
-    private void JX(String date){
+    private void JX(String data){
         try {
-            JSONObject jsonObject=new JSONObject(date);
-            String flag = jsonObject.getString("flag");//获取返回值flag的内容
-            if (flag.equals("success")){
-                is = jsonObject.getString("description");
+            JSONObject jsonObject=new JSONObject(data);
+            String flag = jsonObject.getString("status") ;  //返回值flag的内容
+            if (flag.equals("202")){
+                is = jsonObject.getString("msg");
 
             }else{
-                is = jsonObject.getString("description");
+                is = jsonObject.getString("msg");
             }
             Message message = new Message();
             message.what = 1;
@@ -195,12 +195,13 @@ public class  SignupActivity extends AppCompatActivity {
             switch (msg.what) {
 
                 case 1:
-                    Toast.makeText(LoginActivity.this, is,Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignupActivity.this, is,Toast.LENGTH_LONG).show();
+                    break;
+                default:
                     break;
             }
         }
     };
 }
 
-}
 

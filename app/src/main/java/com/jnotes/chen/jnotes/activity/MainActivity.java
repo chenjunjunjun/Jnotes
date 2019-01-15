@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -42,7 +43,7 @@ import java.util.Iterator;
 import java.util.List;
 
 
-public class MainActivity extends BaseActivity implements  View.OnClickListener, PopupMenu.OnMenuItemClickListener{
+public class MainActivity extends AppCompatActivity implements  View.OnClickListener, PopupMenu.OnMenuItemClickListener{
 
     private static final String TAG = "MainActivity";
     private FloatingActionButton fab;

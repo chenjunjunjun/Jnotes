@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -63,7 +64,7 @@ import rx.schedulers.Schedulers;
 /**
  * 新建笔记
  */
-public class NewAndEditActivity extends BaseActivity {
+public class NewAndEditActivity extends AppCompatActivity {
     private static final String TAG = "NewAndEditActivity";
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int cutTitleLength = 20;//截取的标题长度
@@ -582,7 +583,7 @@ public class NewAndEditActivity extends BaseActivity {
                         if (insertDialog != null && insertDialog.isShowing()) {
                             insertDialog.dismiss();
                         }
-                        showToast("图片插入失败:" + e.getMessage());
+//                        showToast("图片插入失败:" + e.getMessage());
                     }
 
                     @Override
