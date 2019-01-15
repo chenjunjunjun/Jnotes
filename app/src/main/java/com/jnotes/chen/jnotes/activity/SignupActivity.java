@@ -2,6 +2,8 @@ package com.jnotes.chen.jnotes.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,20 +14,30 @@ import android.widget.Toast;
 
 import com.jnotes.chen.jnotes.R;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.FormBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 
-public class SignupActivity extends AppCompatActivity {
+public class  SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_signup) Button _signupButton;
+
     @BindView(R.id.link_login) TextView _loginLink;
 
-
+    private String result,is;  //flag
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +81,8 @@ public class SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
+        Okhttp(name,email,password);
+
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -125,5 +139,68 @@ public class SignupActivity extends AppCompatActivity {
 
         return valid;
     }
+
+
+    public void Okhttp(final String name, final String email,final String password) {
+        new Thread(new Runnable() {//开启线程
+            @Override
+            public void run() {
+                FormBody body =new FormBody.Builder()
+                        .add("phone",name)   //提交参数电话和密码
+                        .add("email",email)
+                        .add("password",password)
+                        .build();
+                Request request = new Request.Builder()
+                        .url("http://118.24.162.159:8000/jnotes/signup/")  //请求的地址
+                        .post(body)
+                        .build();
+                OkHttpClient client=new OkHttpClient();
+
+                try {
+                    Response response = client.newCall(request).execute();
+                    result = response.body().string();           //获得值
+                    JX(result);    //解析
+
+                } catch (IOException e) {
+                    //e.print StackTrace();
+                }
+            }
+        }).start();
+
+
+    }
+
+    private void JX(String date){
+        try {
+            JSONObject jsonObject=new JSONObject(date);
+            String flag = jsonObject.getString("flag");//获取返回值flag的内容
+            if (flag.equals("success")){
+                is = jsonObject.getString("description");
+
+            }else{
+                is = jsonObject.getString("description");
+            }
+            Message message = new Message();
+            message.what = 1;
+            handler.sendMessage(message);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private Handler handler=new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+
+                case 1:
+                    Toast.makeText(LoginActivity.this, is,Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    };
+}
+
 }
 
