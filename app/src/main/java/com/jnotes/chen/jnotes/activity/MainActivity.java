@@ -236,9 +236,6 @@ public class MainActivity extends BaseActivity implements  View.OnClickListener,
                     public void onClick(DialogInterface dialog, int which) {
                         int ret = NoteLitepal.deleteNote(note.getId());
                         if (ret > 0) {
-                            //showToast("删除成功");
-                            //TODO 删除笔记成功后，记得删除图片（分为本地图片和网络图片）
-                            //获取笔记中图片的列表 StringUtils.getTextFromHtml(note.getContent(), true);
                             refreshNoteList();
                         }
                     }

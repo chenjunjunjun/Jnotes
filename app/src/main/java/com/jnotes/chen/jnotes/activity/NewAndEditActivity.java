@@ -675,32 +675,6 @@ public class NewAndEditActivity extends BaseActivity {
         tv_info_weather.setText(note.getNowWeather());        //显示天气数据
     }
 
-    /**
-     * 加载必应每日一图
-     */
-//    private void loadBingPic() {
-//        String requestBingPic = "http://guolin.tech/api/bing_pic";
-//        HttpUtil.sendOkhttpRequest(requestBingPic, new Callback() {
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                final String bingPic = response.body().string();
-//                SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext()).edit();
-//                editor.putString("bing_pic", bingPic);
-//                editor.apply();
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Glide.with(NewAndEditActivity.this).load(bingPic).into(bingPicImg);
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//    }
 
     public class MyLocationListener implements BDLocationListener {
 

@@ -25,10 +25,12 @@
         android:theme="@style/AppTheme"
         android:name="org.litepal.LitePalApplication">
 
+        <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote"> </service>
+
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
-            android:value="" /> //key
+            android:value="PqGAY3ztrrhwVxfbABsUhL34IEgKzsV3" /> //key
 
 
         <activity
