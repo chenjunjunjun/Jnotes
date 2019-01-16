@@ -29,7 +29,7 @@ buildscript {
 allprojects {
     repositories {
 //        google()
-//        jcenter()
+        jcenter()
         maven { url 'https://jitpack.io' }
         // maven库
         def cn = "http://maven.aliyun.com/nexus/content/groups/public/"
