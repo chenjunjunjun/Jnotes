@@ -43,6 +43,18 @@
                 app:titleTextAppearance="@style/ToolbarTheme" />
         </android.support.design.widget.AppBarLayout>
 
+        <EditText
+            android:id="@+id/et_new_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:hint="请输入标题"
+            android:textSize="@dimen/text_size_18"
+            android:textColor="@color/grey_700"
+            android:padding="@dimen/activity_margin_16"/>
+
+
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">

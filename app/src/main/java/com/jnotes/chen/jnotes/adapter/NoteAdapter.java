@@ -80,7 +80,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> im
         holder.itemView.setTag(note);
 //        ArrayList<String> imageList = StringUtils.getTextFromHtml(note.getContent(), true);
         if (note.getType() == 1) {
-            holder.tv_list_type.setText("文字便签");
+//            holder.tv_list_type.setText("文字便签");
             holder.tv_list_summary.setText(note.getContent());
         } else {
             ArrayList<String> imageList = StringUtils.getTextFromHtml(note.getContent(), true);
@@ -90,8 +90,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> im
             } else
                 holder.tv_list_summary.setText(content);
             holder.iv_list_image.setImageURI(Uri.parse(imageList.get(0)));
-            holder.tv_list_type.setText("图片便签");
+//            holder.tv_list_type.setText("图片便签");
         }
+        holder.tv_list_title.setText(note.getTitle());
         holder.tv_list_time.setText(note.getCreateTime());
         holder.tv_list_group.setText(note.getGroupName());
     }
@@ -117,19 +118,21 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> im
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView iv_list_image;//图片预览
         public TextView tv_list_summary;//笔记摘要
-        public TextView tv_list_type;//创建类型
+//        public TextView tv_list_type;//创建类型
         public TextView tv_list_time;//创建时间
         public TextView tv_list_group;//笔记分类
         public CardView card_view_note;//笔记分组
+        public TextView tv_list_title;//笔记标题
 
         public ViewHolder(View view) {
             super(view);
             card_view_note = view.findViewById(R.id.card_view_note);
             iv_list_image = view.findViewById(R.id.iv_list_image);
             tv_list_summary = view.findViewById(R.id.tv_list_summary);
-            tv_list_type = view.findViewById(R.id.tv_list_type);
+//            tv_list_type = view.findViewById(R.id.tv_list_type);
             tv_list_time = view.findViewById(R.id.tv_list_time);
             tv_list_group = view.findViewById(R.id.tv_list_group);
+            tv_list_title = view.findViewById(R.id.tv_list_title);
         }
     }
 }

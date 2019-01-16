@@ -7,7 +7,7 @@ import java.io.Serializable;
 public class Note extends DataSupport implements Serializable {
 
     private int id;//笔记ID
-    //    private String title;//笔记标题
+    private String title;//笔记标题
     private String content;//笔记内容
     private int groupId;//分类ID
     private String groupName;//分类名称
@@ -28,13 +28,13 @@ public class Note extends DataSupport implements Serializable {
         this.id = id;
     }
 
-//    public String getTitle() {
-//        return title;
-//    }
-//
-//    public void setTitle(String title) {
-//        this.title = title;
-//    }
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     public String getContent() {
         return content;
@@ -76,13 +76,6 @@ public class Note extends DataSupport implements Serializable {
 //        this.bgColor = bgColor;
 //    }
 
-//    public int getIsEncrypt() {
-//        return isEncrypt;
-//    }
-
-//    public void setIsEncrypt(int isEncrypt) {
-//        this.isEncrypt = isEncrypt;
-//    }
 
     public String getCreateTime() {
         return createTime;
@@ -91,14 +84,6 @@ public class Note extends DataSupport implements Serializable {
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
-
-//    public String getUpdateTime() {
-//        return updateTime;
-//    }
-
-//    public void setUpdateTime(String updateTime) {
-//        this.updateTime = updateTime;
-//    }
 
     public String getNowWeather() {
         return nowWeather;

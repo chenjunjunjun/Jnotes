@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,14 +71,14 @@ public class NewAndEditActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_CHOOSE = 23;//定义请求码常量
     private static final int cutTitleLength = 20;//截取的标题长度
     public LocationClient mLocationClient;
-//    private EditText et_new_title;
+    private EditText et_new_title;
     private RichTextEditor et_new_content;
 //     private TextView tv_new_group;
 
 
     private Note note;//笔记对象
     private String myGroupName;//组名
-    //    private String myTitle;//标题
+    private String myTitle;//标题
     private String myContent;//内容
     private String myNoteTime;//时间
     private int flag;//区分是新建笔记还是编辑笔记
@@ -130,7 +132,7 @@ public class NewAndEditActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 closeSoftKeyInput();//关闭软键盘
-//                callGallery();   //调用图片库
+                callGallery();   //调用图片库
             }
         });
         FloatingActionButton fab_save = findViewById(R.id.new_fab_save);
@@ -156,6 +158,7 @@ public class NewAndEditActivity extends AppCompatActivity {
         tv_info_location = findViewById(R.id.new_location_info_text);
         tv_info_phinfo = findViewById(R.id.new_phone_info_text);
         et_new_content = findViewById(R.id.et_new_content);
+        et_new_title = findViewById(R.id.et_new_title);
 
 
 //         图片删除事件
@@ -193,13 +196,6 @@ public class NewAndEditActivity extends AppCompatActivity {
 
         openSoftKeyInput();//打开软键盘显示
         showNoteInfo();//显示info数据
-//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(MyApplication.getContext());
-//        String bingPic = prefs.getString("bing_pic", null);
-//        if (bingPic != null) {
-//            Glide.with(this).load(bingPic).into(bingPicImg);
-//        } else {
-//            loadBingPic();
-//        }
 
     }
 
@@ -270,7 +266,7 @@ public class NewAndEditActivity extends AppCompatActivity {
             note = (Note) bundle.getSerializable("note");//获取对象
 
 
-//            myTitle = note.getTitle();
+            myTitle = note.getTitle();
             myContent = note.getContent();
             myNoteTime = note.getCreateTime();
             //NoteGroup group = NoteGroupLitepal.queryGroupById(note.getGroupId());
@@ -293,7 +289,7 @@ public class NewAndEditActivity extends AppCompatActivity {
 
             tv_info_phinfo.setText(note.getPhoneInfo());//显示存储的手机信息
 
-//            et_new_title.setText(note.getTitle());//显示存储的标题
+            et_new_title.setText(note.getTitle());//显示存储的标题
             et_new_content.post(new Runnable() {
                 @Override
                 public void run() {
@@ -312,7 +308,7 @@ public class NewAndEditActivity extends AppCompatActivity {
 
             note.setPhoneInfo(CommonUtil.getSystemModel());//存储note手机型号
 
-//            tv_info_phinfo.setText(note.getPhoneInfo());//新建，显示手机信息
+            tv_info_phinfo.setText(note.getPhoneInfo());//新建，显示手机信息
 
             myNoteTime = CommonUtil.date2string(new Date());//获取当前时间
 
@@ -440,7 +436,7 @@ public class NewAndEditActivity extends AppCompatActivity {
      * 保存数据,=0销毁当前界面，=1不销毁界面，为了防止在后台时保存笔记并销毁，应该只保存笔记
      */
     private void saveNoteData(boolean isBackground) {
-//        String noteTitle = et_new_title.getText().toString();//获取标题
+        String noteTitle = et_new_title.getText().toString();//获取标题
         String noteContent = getEditData();//获取内容
 //        String groupName = tv_new_group.getText().toString();
         String groupName = tv_info_group.getText().toString();
@@ -448,17 +444,26 @@ public class NewAndEditActivity extends AppCompatActivity {
         NoteClass group = NoteClassLitepal.queryGroupByName(groupName);
         Log.d(TAG, "saveNoteData: " + group);
         if (group != null) {
+
+            if (noteTitle.length() == 0 ){//如果标题为空，则截取内容为标题
+                if (noteContent.length() > cutTitleLength){
+                    noteTitle = noteContent.substring(0,cutTitleLength);
+                } else if (noteContent.length() > 0){
+                    noteTitle = noteContent;
+                }
+            }
+
             int groupId = group.getId();
-//            note.setTitle(noteTitle);//保存标题
+            note.setTitle(noteTitle);//保存标题
             note.setContent(noteContent);
             note.setGroupId(groupId);
             note.setGroupName(groupName);
 //        note.setBgColor("#FFFFFF");
             note.setCreateTime(noteTime);//存储当前时间
             if (flag == 0) {//新建笔记
-                if (noteContent.length() == 0) {
+                if (noteContent.length() == 0 && noteTitle.length() == 0) {
                     if (!isBackground) {
-                        Toast.makeText(NewAndEditActivity.this, "不能空白喔~", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(NewAndEditActivity.this, "请输入内容~", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     ArrayList<String> imageList = StringUtils.getTextFromHtml(note.getContent(), true);
@@ -476,7 +481,7 @@ public class NewAndEditActivity extends AppCompatActivity {
             } else if (flag == 1) {//编辑笔记
                 if (noteContent.equals("")) {
                     NoteLitepal.deleteNote(note.getId());
-                } else if (!noteContent.equals(myContent) || !groupName.equals(myGroupName) || !noteTime.equals(myNoteTime)) {
+                } else if (!noteTitle.equals(myTitle) || !noteContent.equals(myContent) || !groupName.equals(myGroupName) || !noteTime.equals(myNoteTime)) {
                     ArrayList<String> imageList = StringUtils.getTextFromHtml(note.getContent(), true);
                     if (imageList.size() == 0) {
                         note.setType(1);
@@ -494,10 +499,6 @@ public class NewAndEditActivity extends AppCompatActivity {
      * 调用图库选择
      */
     private void callGallery() {
-//        //调用系统图库
-//        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");// 相片类型
-//        startActivityForResult(intent, 1);
 
         Matisse.from(this)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG, MimeType.GIF))//照片视频全部显示MimeType.allOf()
@@ -524,7 +525,7 @@ public class NewAndEditActivity extends AppCompatActivity {
                     //处理调用系统图库
                 } else if (requestCode == REQUEST_CODE_CHOOSE) {
                     //异步方式插入图片
-//                    insertImagesSync(data);
+                    insertImagesSync(data);
 
                 }
             }
@@ -548,16 +549,10 @@ public class NewAndEditActivity extends AppCompatActivity {
                     // 可以同时插入多张图片
                     for (Uri imageUri : mSelected) {
                         String imagePath = SDCardUtil.getFilePathFromUri(NewAndEditActivity.this, imageUri);
-                        //Log.e(TAG, "###path=" + imagePath);
                         Bitmap bitmap = ImageUtils.getSmallBitmap(imagePath, screenWidth, screenHeight);//压缩图片
-                        //bitmap = BitmapFactory.decodeFile(imagePath);
                         imagePath = SDCardUtil.saveToSdCard(bitmap);
-                        //Log.e(TAG, "###imagePath="+imagePath);
                         subscriber.onNext(imagePath);
                     }
-
-                    // 测试插入网络图片 http://p695w3yko.bkt.clouddn.com/18-5-5/44849367.jpg
-                    //subscriber.onNext("http://p695w3yko.bkt.clouddn.com/18-5-5/30271511.jpg");
 
                     subscriber.onCompleted();
                 } catch (Exception e) {
@@ -575,7 +570,6 @@ public class NewAndEditActivity extends AppCompatActivity {
                         if (insertDialog != null && insertDialog.isShowing()) {
                             insertDialog.dismiss();
                         }
-                        //showToast("图片插入成功");
                     }
 
                     @Override
@@ -583,7 +577,6 @@ public class NewAndEditActivity extends AppCompatActivity {
                         if (insertDialog != null && insertDialog.isShowing()) {
                             insertDialog.dismiss();
                         }
-//                        showToast("图片插入失败:" + e.getMessage());
                     }
 
                     @Override
@@ -613,7 +606,7 @@ public class NewAndEditActivity extends AppCompatActivity {
      * 退出处理
      */
     private void dealwithExit() {
-        //  String noteTitle = et_new_title.getText().toString();
+        String noteTitle = et_new_title.getText().toString();
         String noteContent = getEditData();
         String groupName = tv_info_group.getText().toString();
         String noteTime = getTitle().toString();
@@ -624,7 +617,7 @@ public class NewAndEditActivity extends AppCompatActivity {
         } else if (flag == 1) {//编辑笔记
             if (noteContent.equals("")) {
                 NoteLitepal.deleteNote(note.getId());
-            } else if (!noteContent.equals(myContent) || !noteTime.equals(myNoteTime) || !groupName.equals(myGroupName)) {
+            } else if (!noteContent.equals(myContent) || !noteTime.equals(myNoteTime) || !groupName.equals(myGroupName) || !noteTitle.equals(myTitle)) {
                 saveNoteData(false);
             }
         }
@@ -644,11 +637,12 @@ public class NewAndEditActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-//        mLocationClient.stop();
+        mLocationClient.stop();
     }
 
     void requestWeather(final String countyName) {
-        String weatherUrl = "http://api.map.baidu.com/telematics/v3/weather?output=json&ak=???&location=" + countyName;//???处是ak
+//        String weatherUrl = "http://api.map.baidu.com/telematics/v3/weather?output=json&ak=E4805d16520de693a3fe707cdc962045&location=" + countyName;
+        String weatherUrl = "https://restapi.amap.com/v3/weather/weatherInfo?key=9a261e9b25c62373a7b8ab4b09b463bb&city=110000";
         HttpUtil.sendOkhttpRequest(weatherUrl, new Callback() {
             @Override
             public void onFailure(okhttp3.Call call, IOException e) {
@@ -658,21 +652,24 @@ public class NewAndEditActivity extends AppCompatActivity {
             @Override
             public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
-                final JsonRootBean jsonRootBean = JsonUtil.handleWeatherResponse(responseText);
+//                Toast.makeText(NewAndEditActivity.this, responseText, Toast.LENGTH_LONG).show();
+//                final JsonRootBean jsonRootBean = JsonUtil.handleWeatherResponse(responseText);
+                final String showWeather = JsonUtil.handleWeatherResponse(responseText);
                 Log.i(TAG, "onResponse: " + responseText);
+                Log.i(TAG, "onShowWeather" + showWeather);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        showWeatherInfo(jsonRootBean);//分析天气数据
+                        showWeatherInfo(showWeather);//分析天气数据
                     }
                 });
             }
         });
     }
 
-    void showWeatherInfo(JsonRootBean jsonRootBean) {
+    void showWeatherInfo(String showWeather) {
 //        note.setNowWeather(jsonRootBean.results.get(0).weather_data.get(0).date + "  " + jsonRootBean.results.get(0).weather_data.get(0).weather);
-        note.setNowWeather("多云");
+        note.setNowWeather(showWeather);
         tv_info_weather.setText(note.getNowWeather());        //显示天气数据
     }
 
@@ -692,7 +689,7 @@ public class NewAndEditActivity extends AppCompatActivity {
                 Log.d(TAG, "onReceiveLocation: " + currentPosition);
                 note.setNowLocation(currentPosition.toString());
                 tv_info_location.setText(note.getNowLocation());//显示查询到位置
-                requestWeather(location.getDistrict());//请求天气，并显示
+                requestWeather("北京");//请求天气，并显示
             }
         }
     }
