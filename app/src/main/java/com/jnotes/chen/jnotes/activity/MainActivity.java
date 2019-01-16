@@ -126,7 +126,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
             }
         },2000);
     }
-    }
 
 
     void initGroup() {

@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
-        Okhttp(name,password);
+        Okhttp(email,password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
@@ -205,7 +205,7 @@ public class LoginActivity extends AppCompatActivity {
             switch (msg.what) {
 
                 case 1:
-                    Toast.makeText(SignupActivity.this, is,Toast.LENGTH_LONG).show();
+                    Toast.makeText(LoginActivity.this, is,Toast.LENGTH_LONG).show();
                     break;
                 default:
                     break;
