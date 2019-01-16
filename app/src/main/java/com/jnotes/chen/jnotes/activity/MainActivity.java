@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.weclome_activity);
         initGroup();
         initView();
 //        Intent intent = new Intent(this, LoginActivity.class);
@@ -115,6 +116,16 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 //        setSupportActionBar(toolbar);
 //        fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(this);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                //启动MainActivity主页面，这段代码是在主线程执行
+                startActivity(new Intent(MainActivity.this,MainActivity.class));
+                //关闭当前页面（结束WelcomeActivity）
+                finish();
+            }
+        },2000);
+    }
     }
 
 
