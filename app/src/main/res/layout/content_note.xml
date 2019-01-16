@@ -9,6 +9,15 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
+    <TextView
+        android:id="@+id/tv_note_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:textSize="@dimen/text_size_18"
+        android:textColor="@color/grey_700"
+        android:padding="@dimen/activity_margin_16"/>
+
 
     <com.sendtion.xrichtext.RichTextView
         android:id="@+id/tv_note_content"

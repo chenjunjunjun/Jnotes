@@ -32,10 +32,10 @@ public class NoteActivity extends AppCompatActivity {
     private static final String TAG = "NoteActivity";
 
     private RichTextView tv_note_content;//笔记内容
-    private TextView /*tv_note_title,*/ tv_info_group, tv_info_weather, tv_info_location, tv_info_phinfo;
+    private TextView tv_note_title, tv_info_group, tv_info_weather, tv_info_location, tv_info_phinfo;
     //private ScrollView scroll_view;
     private Note note;//笔记对象
-    //    private String myTitle;
+    private String myTitle;
     private String myContent;
     private ProgressDialog loadingDialog;
     private String myGroupName;
@@ -100,7 +100,7 @@ public class NoteActivity extends AppCompatActivity {
         loadingDialog.setMessage("数据加载中...");
         loadingDialog.setCanceledOnTouchOutside(false);
         loadingDialog.show();
-//        tv_note_title = findViewById(R.id.tv_note_title);//标题
+        tv_note_title = findViewById(R.id.tv_note_title);//标题
         tv_note_content = findViewById(R.id.tv_note_content);//内容
 
         // 图片点击事件
@@ -124,9 +124,9 @@ public class NoteActivity extends AppCompatActivity {
         Bundle bundle = intent.getBundleExtra("data");
         note = (Note) bundle.getSerializable("note");
 
-//        myTitle = note.getTitle();
+        myTitle = note.getTitle();
         myContent = note.getContent();
-//        tv_note_title.setText(myTitle);
+        tv_note_title.setText(myTitle);
 
         tv_note_content.post(new Runnable() {
             @Override

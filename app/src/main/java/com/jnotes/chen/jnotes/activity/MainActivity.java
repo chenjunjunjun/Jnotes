@@ -12,8 +12,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     private List<Note> noteList;
     private String groupName;//分类名字
     private TextView spinner;
+    private SearchView mSearchView;
 
 
 
@@ -97,7 +100,6 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         refreshAdapter();
         showData();
         this.groupName = groupName;
-        //showToast("切换到了" + groupName);
     }
 
     @Override
@@ -210,7 +212,36 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
         rv_list_main.addItemDecoration(new SpacesItem(0));//设置item间距
 
+        mSearchView = findViewById(R.id.search_view);
+
+//        searchNoteList();
+
     }
+
+    // 搜索框
+//    private void searchNoteList(){
+//        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String s) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String s) {
+//                refreshNoteListForSearch(s);
+//                return false;
+//            }
+//        });
+//    }
+//
+//
+//    private void refreshNoteListForSearch(String S) {
+//            noteList = NoteLitepal.queryNoteAll(S);
+//            refreshAdapter();
+//            showData();
+//    }
+
+
 
     //刷新笔记列表
     private void refreshNoteList() {
@@ -221,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 
     private void refreshAdapter() {
         StaggeredGridLayoutManager layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         rv_list_main.setLayoutManager(layoutManager);
         mNoteAdapter = new NoteAdapter();
         mNoteAdapter.setmNotes(noteList);

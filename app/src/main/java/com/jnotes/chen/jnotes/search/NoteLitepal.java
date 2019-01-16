@@ -39,11 +39,19 @@ public class NoteLitepal {
         return noteList;
     }
 
+
+//    public static List<Note> queryNoteAll(String content) {
+//        List<Note> noteList = new ArrayList<Note>();
+//        noteList = DataSupport.where("title like ？","%" +content+ "%").find(Note.class);
+//        return noteList;
+//    }
+
     public static List<Note> queryNotesAll() {
         List<Note> noteList = new ArrayList<Note>();
         noteList = DataSupport.order("desc").find(Note.class);
         return noteList;
     }
+
 
     /**
      * 更新笔记

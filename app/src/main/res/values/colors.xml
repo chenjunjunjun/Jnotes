@@ -21,5 +21,7 @@
     <color name="mainbac">#f5f5f5</color>
     <color name="notecontent">#171717</color>
     <color name="info">#171717</color>
+    <color name="grey_700">#616161</color>
+    <color name="grey_400">#BDBDBD</color>
 
 </resources>

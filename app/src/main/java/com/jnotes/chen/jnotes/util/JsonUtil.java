@@ -1,12 +1,20 @@
 package com.jnotes.chen.jnotes.util;
 
-import com.google.gson.Gson;
-import com.jnotes.chen.jnotes.jsonbean.JsonRootBean;
+import com.jnotes.chen.jnotes.jsonbean.Weather_data;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class JsonUtil {
-    public static JsonRootBean handleWeatherResponse(String response) {
+    public static String handleWeatherResponse(String response) {
         try {
-            return new Gson().fromJson(response, JsonRootBean.class);
+            JSONObject jsonObject = new JSONObject(response);
+             JSONArray sencondObject =  jsonObject.getJSONArray("lives");
+             JSONObject data = sencondObject.getJSONObject(0);
+             String weather = data.getString("weather");
+             String temperature = data.getString("temperature");
+             return weather+ " " + temperature +"°";
+//            return weather;
         } catch (Exception e) {
             e.printStackTrace();
         }
