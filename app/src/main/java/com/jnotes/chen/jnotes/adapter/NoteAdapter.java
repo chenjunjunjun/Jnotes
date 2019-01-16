@@ -73,12 +73,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> im
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        //Log.i(TAG, "###onBindViewHolder: ");
         Log.d(TAG, "位置: " + position);
         Note note = mNotes.get(position);
-        //将数据保存在itemView的Tag中，以便点击时进行获取
         holder.itemView.setTag(note);
-//        ArrayList<String> imageList = StringUtils.getTextFromHtml(note.getContent(), true);
         if (note.getType() == 1) {
 //            holder.tv_list_type.setText("文字便签");
             holder.tv_list_summary.setText(note.getContent());
