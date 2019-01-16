@@ -32,12 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
+    @BindView(R.id.login_input_email) EditText _emailText;
+    @BindView(R.id.login_input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupLink;
 
     private String result,is;
+    private boolean flag = false;
 
 
     @Override
@@ -84,15 +85,22 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
+//        Log.i(TAG, "OriginLogin :" + email + " " +password);
+
         // TODO: Implement your own authentication logic here.
         Okhttp(email,password);
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
+                        // On complete call either onLoginSuccess or
+                        if (flag){
+                            onLoginSuccess();
+                        }
+                        else{
+                            onLoginFailed();
+                        }
+                        // ;
                         progressDialog.dismiss();
                     }
                 }, 3000);
@@ -120,6 +128,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -157,11 +167,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void run() {
                 FormBody body =new FormBody.Builder()
-                        .add("name",name)   //提交参数电话和密码
+                        .add("email",name)   //提交参数电话和密码
                         .add("password",password)
                         .build();
                 Request request = new Request.Builder()
-                        .url("http://118.24.162.159:8000/jnotes/signup/")  //请求的地址
+                        .url("http://118.24.162.159:8000/jnotes/login/")  //请求的地址
                         .post(body)
                         .build();
                 OkHttpClient client=new OkHttpClient();
@@ -169,6 +179,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     Response response = client.newCall(request).execute();
                     result = response.body().string();           //获得值
+//                    Log.d(TAG, "Login:" +result);
                     JX(result);    //解析
 
                 } catch (IOException e) {
@@ -183,9 +194,10 @@ public class LoginActivity extends AppCompatActivity {
     private void JX(String data){
         try {
             JSONObject jsonObject=new JSONObject(data);
-            String flag = jsonObject.getString("status") ;  //返回值flag的内容
-            if (flag.equals("202")){
+            String status = jsonObject.getString("status") ;  //返回值flag的内容
+            if (status.equals("200")){
                 is = jsonObject.getString("msg");
+                flag = true;
 
             }else{
                 is = jsonObject.getString("msg");

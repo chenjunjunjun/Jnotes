@@ -174,7 +174,7 @@ public class  SignupActivity extends AppCompatActivity {
         try {
             JSONObject jsonObject=new JSONObject(data);
             String flag = jsonObject.getString("status") ;  //返回值flag的内容
-            if (flag.equals("202")){
+            if (flag.equals("200")){
                 is = jsonObject.getString("msg");
 
             }else{

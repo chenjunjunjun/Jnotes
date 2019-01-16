@@ -105,7 +105,8 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.weclome_activity);
+//        setContentView(R.layout.weclome_activity);
+        setContentView(R.layout.activity_main);
         initGroup();
         initView();
 //        Intent intent = new Intent(this, LoginActivity.class);
@@ -116,15 +117,15 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 //        setSupportActionBar(toolbar);
 //        fab = (FloatingActionButton) findViewById(R.id.fab);
 //        fab.setOnClickListener(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                //启动MainActivity主页面，这段代码是在主线程执行
-                startActivity(new Intent(MainActivity.this,MainActivity.class));
-                //关闭当前页面（结束WelcomeActivity）
-                finish();
-            }
-        },2000);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                //启动MainActivity主页面，这段代码是在主线程执行
+//                startActivity(new Intent(MainActivity.this,MainActivity.class));
+//                //关闭当前页面（结束WelcomeActivity）
+//                finish();
+//            }
+//        },2000);
     }
 
 
@@ -172,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
 //                Intent intent = new Intent(MainActivity.this, NewAndEditActivity.class);
 //                intent.putExtra("groupName", groupName);
 //                intent.putExtra("flag", 0);//新建还是编辑，flag
-//                startActivity(intent);
+//                StartActivity(intent);
 //            }
 //        });
         fab.setOnClickListener(this);
@@ -348,7 +349,7 @@ public class MainActivity extends AppCompatActivity implements  View.OnClickList
         Intent intent = null;
         switch (item.getItemId()) {
             case R.id.mbtn_login:
-                intent = new Intent(MainActivity.this, LoginActivity.class);
+//                intent = new Intent(MainActivity.this, LoginActivity.class);
 //                Toast.makeText(this, "登陆", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mbtn_text:
